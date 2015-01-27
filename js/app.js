@@ -1,13 +1,14 @@
 var geocoder;
 var newLatitude, newLongitude;
 var map1, map2;
+var marker1, marker2;
 
 //set up for default maps to be loaded initially(on page loaded)
 function initialize() {
   geocoder = new google.maps.Geocoder();
   var latlng = new google.maps.LatLng(51.5286416,-0.1015987);
   var mapOptions = {
-    zoom: 6,
+    zoom: 4,
     center: latlng
   }
   map1 = new google.maps.Map(document.getElementById('map-canvas1'), mapOptions);
@@ -26,7 +27,7 @@ function codeAddress() {
       //setting up map1
       //Finding position and placing marker
       map1.setCenter(results[0].geometry.location);
-      var marker1 = new google.maps.Marker({
+      marker1 = new google.maps.Marker({
         map: map1,
         position: results[0].geometry.location
       });
@@ -42,11 +43,11 @@ function codeAddress() {
       }
 
       map2.setCenter({lat: newLatitude, lng: newLongitude});
-      var marker2 = new google.maps.Marker({
+      marker2 = new google.maps.Marker({
         map: map2,
         position: {lat: newLatitude, lng: newLongitude} 
       }); 
-      
+    
     } else {
       alert('Query was not successful for the following reason: ' + status);
     }
@@ -60,7 +61,16 @@ google.maps.event.addDomListener(window, 'load', initialize);
 var query = document.getElementById('address');
 query.addEventListener("keypress", function(e){
   if(e.keyCode == 13){
+
     codeAddress();
+    
+    //clears search field
+    query.value = "";
+    
+    //clears old markers
+    marker1.setMap(null);
+    marker2.setMap(null);
+    
   }
 });
 
