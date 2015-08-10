@@ -31,17 +31,17 @@ function codeAddress() {
         map: map1,
         position: results[0].geometry.location
       });
-
+      console.log(results[0]);
       //setting up map2
       //Finding geo-coordinates of opposite place - newLatitude and newLongitude
-      newLatitude = -1 * results[0].geometry.location.k;
+      newLatitude = -1 * results[0].geometry.location.G;
       
-      if(results[0].geometry.location.D < 0) {
-        newLongitude = 180 + results[0].geometry.location.D;
+      if(results[0].geometry.location.K < 0) {
+        newLongitude = 180 + results[0].geometry.location.K;
       } else {
-        newLongitude = results[0].geometry.location.D - 180;
+        newLongitude = results[0].geometry.location.K - 180;
       }
-
+      console.log(newLatitude, newLongitude);
       map2.setCenter({lat: newLatitude, lng: newLongitude});
       marker2 = new google.maps.Marker({
         map: map2,
@@ -61,16 +61,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
 var query = document.getElementById('address');
 query.addEventListener("keypress", function(e){
   if(e.keyCode == 13){
-
     codeAddress();
-    
     //clears search field
     query.value = "";
-    
-    //clears old markers
-    marker1.setMap(null);
-    marker2.setMap(null);
-    
+    // Clear the previous markers
+    if(marker1)
+      marker1.setMap(null);
+    if(marker2)
+      marker2.setMap(null);
   }
 });
 
